@@ -1,0 +1,178 @@
+Tests i picked for white-box testing (where we test the program with knowledge of system, or code design) aimed to run the code for all paths,
+all if else conditions and especially edge-cases to ensure that program does not give an error with unexpected inputs.
+
+Those tests used for white-box testing below (firstly, weed arrays (input arrays) given and below their outputs are given):
+
+1- All farm filled with weeds
+[ [1,1,1,1,1],
+  [1,1,1,1,1],
+  [1,1,1,1,1],                 
+  [1,1,1,1,1],
+  [1,1,1,1,1] ]
+
+Maximum number of weeds cleaned:  9
+Found Path is: (1,1) -> (1,2) -> (1,3) -> (1,4) -> (1,5) -> (2,5) -> (3,5) -> (4,5) -> (5,5) 
+Filled array f:  [[1, 2, 3, 4, 5], [2, 3, 4, 5, 6], [3, 4, 5, 6, 7], [4, 5, 6, 7, 8], [5, 6, 7, 8, 9]]
+
+2- All empty farm with (No weed)
+[ [0,0,0,0,0],
+  [0,0,0,0,0],
+  [0,0,0,0,0],
+  [0,0,0,0,0],
+  [0,0,0,0,0] ]	
+
+Maximum number of weeds cleaned:  0
+Found Path is: (1,1) -> (1,2) -> (1,3) -> (1,4) -> (1,5) -> (2,5) -> (3,5) -> (4,5) -> (5,5) 
+Filled array f:  [[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0]]
+
+3- L shaped filled farm (As stated in pdf normally we check two neighbour cell, but for edges of the farm we need different check)
+[ [1,0,0,0,0],
+  [1,0,0,0,0],
+  [1,0,0,0,0],
+  [1,0,0,0,0],
+  [1,1,1,1,1] ]	
+
+Maximum number of weeds cleaned:  9
+Found Path is: (1,1) -> (2,1) -> (3,1) -> (4,1) -> (5,1) -> (5,2) -> (5,3) -> (5,4) -> (5,5) 
+Filled array f:  [[1, 1, 1, 1, 1], [2, 2, 2, 2, 2], [3, 3, 3, 3, 3], [4, 4, 4, 4, 4], [5, 6, 7, 8, 9]]
+
+4- Symmetric case of the 3
+[ [1,1,1,1,1],
+  [0,0,0,0,1],
+  [0,0,0,0,1],
+  [0,0,0,0,1],
+  [0,0,0,0,1] ]	
+
+Maximum number of weeds cleaned:  9
+Found Path is: (1,1) -> (1,2) -> (1,3) -> (1,4) -> (1,5) -> (2,5) -> (3,5) -> (4,5) -> (5,5) 
+Filled array f:  [[1, 2, 3, 4, 5], [1, 2, 3, 4, 6], [1, 2, 3, 4, 7], [1, 2, 3, 4, 8], [1, 2, 3, 4, 9]]
+
+5- Only 1 cell in the farm (to check if it terminates)
+[ [0] ]
+
+Maximum number of weeds cleaned:  0
+Found Path is: (1,1) 
+Filled array f:  [[0]]
+
+6- Same with case 5 but we have weed now
+[ [1] ]
+
+Maximum number of weeds cleaned:  1
+Found Path is: (1,1) 
+Filled array f:  [[1]]
+
+7- Empty farm to prevent runtime or other kind of errors
+[] or [[]]
+
+Given input array does not contain any field (No area for the farm)
+
+8- One row or one column cases are also checked to make sure that if edge check needed immediately program checks that
+[ [1,1,1,1,1] ]
+
+Maximum number of weeds cleaned:  5
+Found Path is: (1,1) -> (1,2) -> (1,3) -> (1,4) -> (1,5) 
+Filled array f:  [[1, 2, 3, 4, 5]]
+
+9- Column version of case 8
+[ [0],
+  [0],
+  [0],
+  [0],
+  [0] ]
+
+Maximum number of weeds cleaned:  0
+Found Path is: (1,1) -> (2,1) -> (3,1) -> (4,1) -> (5,1) 
+Filled array f:  [[0], [0], [0], [0], [0]]
+
+####################################### END OF THE WHITE BOX TESTS ####################################### 
+
+For the black-box tests first of all i assumed square matrices nxn (to see time scalability and performance issues better).
+Also i did not do specific measurements because we should treat like we do not know what this code does. So, with numpy library i
+generated random farms with random 0s and 1s
+
+Some randomly generated instances i tried:
+
+SAMPLE 1
+
+[[0, 1, 0, 1, 0, 1],
+ [1, 0, 0, 1, 1, 0],
+ [1, 0, 0, 0, 0, 1]]
+Maximum number of weeds cleaned:  5
+Found Path is: (1,1) -> (1,2) -> (1,3) -> (1,4) -> (2,4) -> (2,5) -> (2,6) -> (3,6) 
+Filled array f:  [[0, 1, 1, 2, 2, 3], [1, 1, 1, 3, 4, 4], [2, 2, 2, 3, 4, 5]]
+
+SAMPLE 2
+
+[[0, 0, 1, 1, 0, 1, 0, 0, 1, 0, 0],
+ [1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 1],
+ [1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0],
+ [1, 1, 1, 0, 1, 0, 0, 0, 1, 0, 1],
+ [1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1],
+ [1, 0, 1, 1, 1, 0, 0, 0, 1, 1, 0],
+ [0, 1, 0, 1, 0, 0, 1, 1, 0, 1, 1],
+ [0, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0],
+ [0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0]]
+Maximum number of weeds cleaned:  14
+Found Path is: (1,1) -> (2,1) -> (3,1) -> (4,1) -> (4,2) -> (4,3) -> (5,3) -> (6,3) -> (6,4) -> (7,4) -> (8,4) -> (8,5) -> (8,6) -> (8,7) -> (8,8) -> (9,8) -> (9,9) -> (9,10) -> (9,11) 
+Filled array part is removed since it was too long to observe...
+
+SAMPLE 3
+
+[[0, 1, 0, 0, 0, 1, 1, 0],
+ [0, 0, 0, 0, 1, 0, 1, 0],
+ [0, 0, 0, 1, 1, 1, 1, 1],
+ [0, 1, 1, 1, 1, 0, 0, 1],
+ [1, 0, 1, 1, 1, 0, 1, 1],
+ [1, 1, 0, 1, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 1, 1, 1],
+ [1, 0, 0, 1, 1, 0, 1, 1],
+ [1, 0, 1, 1, 0, 1, 0, 0],
+ [1, 0, 1, 1, 0, 1, 1, 1],
+ [0, 1, 0, 1, 0, 0, 0, 0],
+ [0, 1, 0, 1, 0, 0, 1, 0],
+ [0, 0, 1, 1, 0, 0, 0, 0],
+ [0, 1, 0, 0, 1, 0, 1, 0],
+ [0, 1, 0, 1, 1, 0, 0, 1]]
+Maximum number of weeds cleaned:  15
+Found Path is: (1,1) -> (1,2) -> (2,2) -> (3,2) -> (4,2) -> (4,3) -> (4,4) -> (5,4) -> (6,4) -> (7,4) -> (8,4) -> (9,4) -> (10,4) -> (11,4) -> (12,4) -> (13,4) -> (13,5) -> (14,5) -> (14,6) -> (14,7) -> (14,8) -> (15,8) 
+
+SAMPLE 4
+
+[[0, 0, 1, 0, 0, 1, 0],
+ [0, 0, 0, 1, 1, 0, 0],
+ [1, 1, 0, 0, 0, 0, 0],
+ [0, 1, 1, 1, 0, 1, 0],
+ [0, 0, 1, 0, 0, 1, 1],
+ [0, 0, 0, 0, 1, 1, 1],
+ [1, 1, 1, 1, 1, 1, 0]]
+Maximum number of weeds cleaned:  9
+Found Path is: (1,1) -> (2,1) -> (3,1) -> (3,2) -> (4,2) -> (4,3) -> (4,4) -> (4,5) -> (4,6) -> (5,6) -> (5,7) -> (6,7) -> (7,7) 
+Filled array f:  [[0, 0, 1, 1, 1, 2, 2], [0, 0, 1, 2, 3, 3, 3], [1, 2, 2, 2, 3, 3, 3], [1, 3, 4, 5, 5, 6, 6], [1, 3, 5, 5, 5, 7, 8], [1, 3, 5, 5, 6, 8, 9], [2, 4, 6, 7, 8, 9, 9]]
+
+SAMPLE 5
+[[1, 1, 0, 0, 1, 1, 0, 1, 1, 1],
+ [0, 1, 0, 1, 1, 1, 0, 0, 0, 1],
+ [0, 1, 0, 1, 1, 0, 1, 1, 1, 1],
+ [1, 0, 1, 0, 1, 0, 1, 1, 0, 0],
+ [0, 0, 0, 1, 1, 1, 0, 0, 1, 0],
+ [1, 1, 1, 1, 1, 0, 0, 0, 1, 0],
+ [0, 0, 1, 0, 1, 1, 1, 0, 1, 1],
+ [1, 0, 1, 0, 0, 0, 0, 1, 1, 0],
+ [0, 1, 0, 0, 0, 0, 0, 0, 1, 0],
+ [0, 0, 0, 0, 1, 0, 1, 1, 1, 1]]
+Maximum number of weeds cleaned:  17
+Found Path is: (1,1) -> (1,2) -> (2,2) -> (2,3) -> (2,4) -> (2,5) -> (3,5) -> (4,5) -> (5,5) -> (6,5) -> (7,5) -> (7,6) -> (7,7) -> (7,8) -> (7,9) -> (8,9) -> (9,9) -> (10,9) -> (10,10) 
+
+
+After, i tried to enlarge farm as far as i can to test the performance (since with DP we got efficient solution really 
+big matrices also ran succesfully). Time experiments are plotted, put and discussed in the report pdf.
+
+
+
+
+
+
+
+
+
+
